@@ -73,6 +73,99 @@
             color: #6c757d;
             margin-top: 0.5rem;
         }
+
+        .form-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form input[type="file"],
+        form input[type="submit"] {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            margin-top: 0.3rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.35rem;
+            font-size: 1rem;
+        }
+
+        form input[type="submit"] {
+            background-color: #212529;
+            color: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1.2rem;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .post-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-card h2 a {
+            text-decoration: none;
+            color: #212529;
+            transition: color 0.3s ease;
+        }
+
+        .post-card h2 a:hover {
+            color: #ffc107;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .post-content {
+            font-size: 1.05rem;
+            color: #343a40;
+        }
+
+        img.profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 1rem;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            margin: 0 0.25rem;
+            border-radius: 0.3rem;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #ffc107;
+            color: #212529;
+        }
     </style>
 </head>
 
@@ -84,10 +177,13 @@
             <li><a href="{{ url_for('core.index') }}">Home</a></li>
             <li><a href="{{ url_for('core.info') }}">About</a></li>
             <li><a href="#">Create Post</a></li>
-            <li><a href="#">Account</a></li>
-            <li><a href="#">Register</a></li>
-            <li><a href="#">Log In</a></li>
-            <li><a href="#">Log Out</a></li>
+            <li><a href="{{url_for('users.account')}}">Account</a></li>
+            <li><a href="{{url_for('users.register')}}">Register</a></li>
+            {%if current_user.is_authenticated%}
+            <li><a href="{{url_for('users.logout')}}">Log Out</a></li>
+            {%else%}
+            <li><a href="{{url_for('users.login')}}">Log In</a></li>
+            {%endif%}
         </ul>
     </nav>
 
