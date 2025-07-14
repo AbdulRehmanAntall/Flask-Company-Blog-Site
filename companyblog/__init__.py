@@ -7,14 +7,8 @@ from flask_login import LoginManager
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 
-# Determine base directory
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-# Use DATABASE_URL env variable if exists, else fallback to local SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL',
-    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-)
+# Force SQLite locally (ignore DATABASE_URL environment variable)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data.sqlite')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -25,7 +19,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 
-# Blueprint registrations
 from companyblog.core.views import core
 from companyblog.error_pages.handlers import error_pages
 from companyblog.users.views import users
