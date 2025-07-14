@@ -2,47 +2,56 @@
 
 {% block content %}
 <div class="jumbotron">
-    <h1>Company Blog</h1>
+    <h1>Latest Blogs</h1>
+    <p>Discover what others are writing about.</p>
+</div>
+
+<!-- Search Bar -->
+<div class="container mb-4">
+    <form method="GET" action="{{ url_for('core.index') }}" class="d-flex">
+        <input type="text" name="search" class="form-control me-2" placeholder="Search blog posts..."
+            value="{{ request.args.get('search', '') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 </div>
 
 <div class="container">
     {% for post in blog_posts.items %}
     <div class="post-card">
         <h2>
-            <a class="card-title" href="{{ url_for('blog_posts.blog_post', blog_post_id=post.id) }}">
+            <a href="{{ url_for('blog_posts.blog_post', blog_post_id=post.id) }}">
                 {{ post.title }}
             </a>
         </h2>
 
         <div class="post-meta">
             <a href="{{ url_for('users.user_posts', username=post.author.username) }}">
-                Written By: {{ post.author.username }}
-            </a> |
-            Published on: {{ post.date.strftime('%d-%m-%Y') }}
+                <strong>{{ post.author.username }}</strong>
+            </a> • {{ post.date.strftime('%b %d, %Y') }}
         </div>
 
         <p class="post-content">
-            {{ post.text[:250] }}{% if post.text|length > 250 %}...{% endif %}
+            {{ post.text[:300] }}{% if post.text|length > 300 %}...{% endif %}
         </p>
 
-        <a class="btn btn-primary" href="{{ url_for('blog_posts.blog_post', blog_post_id=post.id) }}">
-            Read Blog Post
-        </a>
+        <div class="post-actions">
+            <a class="btn btn-primary" href="{{ url_for('blog_posts.blog_post', blog_post_id=post.id) }}">
+                Read More
+            </a>
+        </div>
     </div>
     {% endfor %}
 </div>
 
-<nav>
-    <ul class="pagination justify-content-center">
-        {% for page_num in blog_posts.iter_pages(left_edge=1, right_edge=1, right_current=1, left_current=1) %}
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        {% for page_num in blog_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
         {% if page_num %}
         {% if blog_posts.page == page_num %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#">{{ page_num }}</a>
-        </li>
+        <li class="page-item active"><a class="page-link" href="#">{{ page_num }}</a></li>
         {% else %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a>
+        <li class="page-item"><a class="page-link"
+                href="{{ url_for('core.index', page=page_num, search=request.args.get('search')) }}">{{ page_num }}</a>
         </li>
         {% endif %}
         {% endif %}

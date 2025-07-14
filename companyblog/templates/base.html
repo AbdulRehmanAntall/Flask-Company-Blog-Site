@@ -5,8 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Blog</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+
     <style>
-        /* Reset and base layout */
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e0e7ff;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #1a1b25;
+            --light: #f8f9ff;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,203 +39,508 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #343a40;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
             line-height: 1.6;
         }
 
-        /* Navigation bar */
         nav {
-            background-color: #212529;
+            background-color: white;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left,
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
         }
 
         .nav-links {
-            list-style: none;
             display: flex;
             gap: 1.5rem;
         }
 
-        .nav-links li a {
+        .nav-links a {
+            color: var(--dark);
             text-decoration: none;
-            color: #f8f9fa;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
         }
 
-        .nav-links li a:hover {
-            color: #ffc107;
+        .nav-links a:hover {
+            color: var(--primary);
         }
 
-        .logo {
-            color: #f8f9fa;
-            font-size: 1.8rem;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .icon-btn {
+            color: var(--gray);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
             font-weight: bold;
-            letter-spacing: 1px;
         }
 
-        /* Jumbotron */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
         .jumbotron {
-            background-color: #e9ecef;
-            padding: 2.5rem 1rem;
-            border-radius: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 2rem;
             text-align: center;
-            margin-top: 2rem;
+            border-radius: var(--radius-lg);
+            margin: 2rem 0;
+            box-shadow: var(--shadow-md);
         }
 
         .jumbotron h1 {
-            font-size: 3rem;
-            color: #343a40;
-        }
-
-        /* Main container */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Post cards */
-        .post-card {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .post-card h2 a {
-            text-decoration: none;
-            color: #212529;
-            transition: color 0.3s ease;
-        }
-
-        .post-card h2 a:hover {
-            color: #ffc107;
-        }
-
-        .post-meta {
-            font-size: 0.9rem;
-            color: #6c757d;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
         }
 
-        .post-content {
-            font-size: 1.05rem;
-            color: #343a40;
-            margin-bottom: 1rem;
+        .jumbotron p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
         }
 
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.35rem;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: #212529;
-            color: #f8f9fa;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        /* Pagination */
-        .pagination {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            padding: 0;
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
             margin-top: 2rem;
         }
 
-        .pagination .page-item {
-            margin: 0 0.25rem;
+        .post-card {
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .pagination .page-link {
-            display: block;
-            padding: 0.5rem 0.9rem;
-            border: 1px solid #dee2e6;
-            color: #212529;
-            border-radius: 0.3rem;
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .post-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-card h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        .post-card h2 a {
+            color: var(--dark);
             text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: var(--transition);
         }
 
-        .pagination .page-item.disabled .page-link {
-            background-color: #f8f9fa;
-            color: #6c757d;
-            cursor: not-allowed;
+        .post-card h2 a:hover {
+            color: var(--primary);
         }
 
-        .pagination .page-item .page-link:hover {
-            background-color: #ffc107;
-            color: #212529;
+        .post-meta {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        /* Forms */
+        .post-excerpt {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            flex-grow: 1;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.2rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+        }
+
         .form-container {
-            max-width: 400px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            margin: 3rem auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
 
         form label {
             display: block;
-            margin-top: 1rem;
-            font-weight: 600;
-            color: #343a40;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
         }
 
-        form input[type="text"],
-        form input[type="email"],
-        form input[type="password"],
-        form input[type="file"],
-        form input[type="submit"] {
+        form input,
+        form textarea,
+        form select {
             width: 100%;
-            padding: 0.6rem 0.75rem;
-            margin-top: 0.3rem;
-            border: 1px solid #ced4da;
-            border-radius: 0.35rem;
+            padding: 0.8rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
             font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        form input:focus,
+        form textarea:focus,
+        form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
         form input[type="submit"] {
-            background-color: #212529;
-            color: #f8f9fa;
-            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 1.2rem;
+            margin-top: 1rem;
         }
 
         form input[type="submit"]:hover {
-            background-color: #ffc107;
-            color: #212529;
+            background: var(--secondary);
         }
 
-        /* Profile pictures */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
         img.profile-pic {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            margin-top: 1rem;
+            border: 3px solid var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-info h1 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .profile-info p {
+            color: var(--gray);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .page-link:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .page-link.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert-success {
+            background-color: #ebfbee;
+            color: #2b8a3e;
+            border-left: 4px solid #2b8a3e;
+        }
+
+        .alert-danger {
+            background-color: #fff5f5;
+            color: #c92a2a;
+            border-left: 4px solid #c92a2a;
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .post-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown link style */
+        .dropdown-toggle {
+            cursor: pointer;
+            color: var(--dark);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        /* Dropdown content hidden by default */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-sm);
+            z-index: 1000;
+            margin-top: 0.5rem;
+        }
+
+        /* Dropdown links inside dropdown */
+        .dropdown-content a {
+            color: var(--dark);
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        /* Hover effect on dropdown links */
+        .dropdown-content a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Show dropdown content on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Optional: Change color on hover of toggle */
+        .dropdown:hover .dropdown-toggle {
+            color: var(--primary);
+        }
+
+        ul.user-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .user-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-list li img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+
+
+        .modal-dialog {
+            max-width: 400px;
+            margin: 10rem auto;
+        }
+
+        .modal-content {
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            padding: 1rem;
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            color: var(--dark);
+            padding-top: 0.5rem;
+        }
+
+        .modal-footer {
+            border-top: none;
+            padding-top: 0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
         }
     </style>
 </head>
@@ -218,25 +548,66 @@
 <body>
 
     <nav>
-        <div class="logo">Company Blog</div>
-        <ul class="nav-links">
-            <li><a href="{{ url_for('core.index') }}">Home</a></li>
-            <li><a href="{{ url_for('core.info') }}">About</a></li>
-            <li><a href="{{ url_for('blog_posts.create_post') }}">Create Post</a></li>
-            <li><a href="{{url_for('users.account')}}">Account</a></li>
-            {%if current_user.is_authenticated%}
-            <li><a href="{{url_for('users.logout')}}">Log Out</a></li>
-            {%else%}
-            <li><a href="{{url_for('users.register')}}">Register</a></li>
-            <li><a href="{{url_for('users.login')}}">Log In</a></li>
-            {%endif%}
-        </ul>
+        <div class="nav-left">
+            <div class="logo">
+                <a href="{{ url_for('core.index') }}" class="logo">
+                    <i class="fas fa-blog"></i>
+                    <span>BlogZone</span>
+                </a>
+
+            </div>
+            <div class="nav-links">
+
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('blog_posts.create_post') }}">Post</a>
+                <a href="{{ url_for('users.account') }}">Profile</a>
+                {% endif %}
+            </div>
+            <div class="dropdown">
+                <a href="{{ url_for('core.find_people') }}" class="dropdown-toggle">People</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('core.find_people') }}">Search Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            {% if current_user.is_authenticated %}
+
+            <a href="{{ url_for('users.logout') }}" class="btn btn-outline btn-sm">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </a>
+            {% else %}
+            <a href="{{ url_for('users.login') }}" class="btn btn-outline btn-sm">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+            </a>
+            <a href="{{ url_for('users.register') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-user-plus"></i>
+                Register
+            </a>
+            <a href="{{ url_for('core.info') }}">About</a>
+
+            {% endif %}
+
+        </div>
     </nav>
 
     <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+            <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }}"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
         {% block content %}{% endblock %}
     </div>
-
 
 </body>
 
