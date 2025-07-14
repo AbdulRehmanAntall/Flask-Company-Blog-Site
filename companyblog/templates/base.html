@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Blog</title>
     <style>
+        /* Reset and base layout */
         * {
             margin: 0;
             padding: 0;
@@ -15,8 +16,11 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fa;
+            color: #343a40;
+            line-height: 1.6;
         }
 
+        /* Navigation bar */
         nav {
             background-color: #212529;
             padding: 1rem 2rem;
@@ -44,36 +48,119 @@
 
         .logo {
             color: #f8f9fa;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
+        /* Jumbotron */
         .jumbotron {
             background-color: #e9ecef;
-            padding: 2rem 1rem;
+            padding: 2.5rem 1rem;
             border-radius: 0.5rem;
             text-align: center;
             margin-top: 2rem;
         }
 
         .jumbotron h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #343a40;
         }
 
-        .jumbotron p {
-            font-size: 1.1rem;
-            color: #6c757d;
-            margin-top: 0.5rem;
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
 
+        /* Post cards */
+        .post-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-card h2 a {
+            text-decoration: none;
+            color: #212529;
+            transition: color 0.3s ease;
+        }
+
+        .post-card h2 a:hover {
+            color: #ffc107;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .post-content {
+            font-size: 1.05rem;
+            color: #343a40;
+            margin-bottom: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.35rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #212529;
+            color: #f8f9fa;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        /* Pagination */
+        .pagination {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin-top: 2rem;
+        }
+
+        .pagination .page-item {
+            margin: 0 0.25rem;
+        }
+
+        .pagination .page-link {
+            display: block;
+            padding: 0.5rem 0.9rem;
+            border: 1px solid #dee2e6;
+            color: #212529;
+            border-radius: 0.3rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        /* Forms */
         .form-container {
             max-width: 400px;
             margin: 2rem auto;
@@ -117,54 +204,13 @@
             color: #212529;
         }
 
-        .post-card {
-            background-color: #ffffff;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .post-card h2 a {
-            text-decoration: none;
-            color: #212529;
-            transition: color 0.3s ease;
-        }
-
-        .post-card h2 a:hover {
-            color: #ffc107;
-        }
-
-        .post-meta {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-bottom: 1rem;
-        }
-
-        .post-content {
-            font-size: 1.05rem;
-            color: #343a40;
-        }
-
+        /* Profile pictures */
         img.profile-pic {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
             margin-top: 1rem;
-        }
-
-        .pagination .page-item.disabled .page-link {
-            background-color: #f8f9fa;
-            color: #6c757d;
-            border: 1px solid #dee2e6;
-            margin: 0 0.25rem;
-            border-radius: 0.3rem;
-        }
-
-        .pagination .page-item .page-link:hover {
-            background-color: #ffc107;
-            color: #212529;
         }
     </style>
 </head>
@@ -176,12 +222,12 @@
         <ul class="nav-links">
             <li><a href="{{ url_for('core.index') }}">Home</a></li>
             <li><a href="{{ url_for('core.info') }}">About</a></li>
-            <li><a href="#">Create Post</a></li>
+            <li><a href="{{ url_for('blog_posts.create_post') }}">Create Post</a></li>
             <li><a href="{{url_for('users.account')}}">Account</a></li>
-            <li><a href="{{url_for('users.register')}}">Register</a></li>
             {%if current_user.is_authenticated%}
             <li><a href="{{url_for('users.logout')}}">Log Out</a></li>
             {%else%}
+            <li><a href="{{url_for('users.register')}}">Register</a></li>
             <li><a href="{{url_for('users.login')}}">Log In</a></li>
             {%endif%}
         </ul>
